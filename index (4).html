@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Craft Palette — Little creations. Beautiful memories.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #fbf9f8;
+      --bg-alt: #f6f3f2;
+      --white: #ffffff;
+      --ink: #303030;
+      --ink-soft: #4f4444;
+      --muted: #715859;
+      --sage: #56624f;
+      --sage-text: #5c6855;
+      --sage-tint: rgba(217, 231, 207, 0.6);
+      --blush-tint: rgba(232, 200, 200, 0.2);
+      --line: #eae8e7;
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--ink-soft); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+
+    /* Placeholder for Figma photography (replace with exported images) */
+    .ph { width: 100%; height: 100%; background: linear-gradient(135deg, #e8c8c8 0%, #d9e7cf 55%, #f0eded 100%); }
+    .ph--warm { background: linear-gradient(135deg, #f0eded 0%, #e8c8c8 60%, #eae8e7 100%); }
+    .ph--sage { background: linear-gradient(160deg, #d9e7cf 0%, #b9c8ad 60%, #eae8e7 100%); }
+    .ph--choc { background: linear-gradient(145deg, #715859 0%, #6a5253 45%, #d3c3c3 100%); }
+    .ph--paper { background: linear-gradient(120deg, #f6f3f2 0%, #d3c3c3 100%); }
+
+    /* Icons */
+    .ico { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+    /* Shared type */
+    .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 1.1px; text-transform: uppercase; color: var(--sage-text); }
+    .h2 { font-family: var(--serif); font-weight: 400; font-size: 40px; line-height: 1.2; color: var(--ink); letter-spacing: -0.8px; }
+    .h3 { font-family: var(--sans); font-weight: 600; font-size: 22px; line-height: 1.35; color: var(--ink); }
+    .section-head { text-align: center; max-width: 672px; margin: 0 auto 64px; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .section-head p { font-size: 15px; color: var(--ink-soft); }
+
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 28px; border-radius: 8px; font-weight: 600; font-size: 16px; transition: transform .2s ease, background .2s ease, box-shadow .2s ease; }
+    .btn--dark { background: var(--ink); color: #f3f0f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1); }
+    .btn--dark:hover { transform: translateY(-2px); }
+    .btn--light { background: var(--bg-alt); color: var(--ink); box-shadow: 0 1px 1px rgba(0,0,0,.05); }
+    .btn--light:hover { background: #ece8e6; }
+    .btn--sm { padding: 12px 18px; font-size: 14px; }
+    .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    /* Header */
+    .aside { background: var(--ink); color: #f3f0f0; font-size: 12px; text-align: center; padding: 8px 0; letter-spacing: .3px; }
+    .header { background: var(--bg); position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--line); }
+    .header .wrap { height: 80px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark { width: 32px; height: 32px; border-radius: 50%; background: var(--sage-tint); display: grid; place-items: center; color: var(--sage); }
+    .brand-name { font-family: var(--serif); font-size: 20px; color: var(--ink); line-height: 1.1; }
+    .brand-sub { font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--sage-text); font-weight: 600; }
+    .nav { display: flex; gap: 32px; }
+    .nav a { font-size: 14px; color: var(--ink-soft); font-weight: 500; }
+    .nav a:hover { color: var(--ink); }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .icon-btn { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: var(--ink); }
+    .icon-btn:hover { background: var(--bg-alt); }
+    .cart-count { position: absolute; top: 2px; right: 2px; background: var(--sage); color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: grid; place-items: center; font-weight: 600; }
+    .cart-wrap { position: relative; }
+    .order-pill { background: var(--bg-alt); box-shadow: 0 1px 2px rgba(0,0,0,.05); padding: 10px 16px; border-radius: 8px; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--ink); }
+
+    /* Hero */
+    .hero { background: var(--bg); padding: 96px 0; }
+    .hero-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 40px; align-items: center; }
+    .hero-left { grid-column: 1 / span 6; padding-right: 24px; }
+    .hero-right { grid-column: 7 / span 6; position: relative; border-radius: 24px; overflow: hidden; height: 643px; box-shadow: 0 25px 50px -12px rgba(0,0,0,.25); }
+    .hero-right .ph { position: absolute; inset: 0; }
+    .hero-right::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(48,48,48,.4), rgba(48,48,48,0) 50%); }
+    .pill-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 14px; border-radius: 9999px; background: var(--sage-tint); color: var(--sage-text); margin-bottom: 24px; }
+    .pill-badge .ico { width: 12px; height: 12px; }
+    .hero h1 { font-family: var(--serif); font-weight: 400; font-size: 56px; line-height: 1.12; letter-spacing: -1.4px; color: var(--ink); margin-bottom: 24px; }
+    .hero-lead { font-size: 18px; line-height: 1.63; color: var(--ink-soft); max-width: 576px; margin-bottom: 40px; }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 32px; }
+    .hero-note { display: flex; align-items: center; gap: 10px; font-size: 13px; font-style: italic; color: rgba(79,68,68,.8); }
+    .hero-note .ico { color: var(--sage); }
+    .float-badge { position: absolute; left: 24px; bottom: 24px; z-index: 2; background: rgba(251,249,248,.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 9999px; padding: 12px 20px; display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; color: var(--ink); box-shadow: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -4px rgba(0,0,0,.1); }
+    .float-badge .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--sage); }
+    .float-badge .sep { color: #d3c3c3; }
+    .float-badge span.label { font-weight: 600; letter-spacing: .3px; }
+
+    /* Trust strip */
+    .trust { background: var(--white); padding: 40px 0; box-shadow: 0 1px 1px rgba(0,0,0,.05); }
+    .trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
+    .trust-item { display: flex; gap: 16px; align-items: flex-start; }
+    .trust-icon { width: 48px; height: 48px; border-radius: 16px; background: var(--sage-tint); display: grid; place-items: center; color: var(--sage); flex-shrink: 0; }
+    .trust-item h3 { font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.4; margin-bottom: 3px; }
+    .trust-item p { font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+
+    /* Shop by category */
+    .section { padding: 112px 0; }
+    .section--alt { background: var(--bg-alt); }
+    .categories { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .cat-card { display: flex; flex-direction: column; border-radius: 16px; overflow: hidden; background: var(--white); box-shadow: 0 1px 8px rgba(0,0,0,.04); transition: transform .3s ease, box-shadow .3s ease; }
+    .cat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -8px rgba(0,0,0,.12); }
+    .cat-img { aspect-ratio: 278 / 347.5; overflow: hidden; }
+    .cat-body { padding: 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .cat-body h3 { font-family: var(--sans); font-size: 18px; font-weight: 600; color: var(--ink); }
+    .cat-body p { font-size: 14px; line-height: 1.5; color: var(--ink-soft); min-height: 40px; }
+    .cat-link { margin-top: auto; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--sage); }
+
+    /* Featured products */
+    .products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px 24px; }
+    .product { display: flex; flex-direction: column; background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,.04); }
+    .product-img { position: relative; aspect-ratio: 1 / 1; overflow: hidden; }
+    .tag { position: absolute; top: 16px; left: 16px; background: rgba(251,249,248,.9); padding: 6px 12px; border-radius: 9999px; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--ink); }
+    .product-info { padding: 24px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+    .product-cat { font-size: 11px; font-weight: 600; letter-spacing: 1.1px; text-transform: uppercase; color: var(--sage-text); }
+    .product-info h3 { font-size: 22px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+    .price { font-size: 15px; color: var(--ink-soft); }
+    .product-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; }
+    .order-link { display: inline-flex; align-items: center; gap: 8px; padding: 12px 0; font-size: 14px; font-weight: 600; color: var(--ink); }
+    .order-link:hover { color: var(--sage); }
+    .add-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--bg-alt); display: grid; place-items: center; color: var(--ink); transition: background .2s; }
+    .add-btn:hover { background: var(--sage-tint); }
+    .advisory { margin: 56px auto 0; max-width: 672px; background: var(--white); border-radius: 16px; padding: 24px 28px; font-size: 14px; line-height: 1.6; color: var(--ink-soft); border-left: 3px solid var(--sage); }
+    .advisory strong { color: var(--ink); }
+
+    /* Brand story */
+    .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .story-text .eyebrow { margin-bottom: 14px; }
+    .story-text h2 { margin-bottom: 28px; }
+    .story-text p { font-size: 16px; line-height: 1.75; color: var(--ink-soft); margin-bottom: 18px; }
+    .signoff { font-family: var(--serif); font-style: italic; font-size: 17px; color: var(--ink); margin: 24px 0 32px; }
+    .story-visual { position: relative; }
+    .story-visual .main { height: 420px; border-radius: 24px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,.25); }
+    .stamp { position: absolute; left: 0; bottom: -40px; width: 88%; max-width: 448px; background: var(--white); border-radius: 16px; padding: 22px 24px; display: flex; gap: 16px; align-items: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,.1), 0 8px 10px -6px rgba(0,0,0,.1); }
+    .stamp-icon { width: 48px; height: 48px; border-radius: 50%; background: var(--sage-tint); display: grid; place-items: center; color: var(--sage); flex-shrink: 0; }
+    .stamp h4 { font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+    .stamp p { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+
+    /* Personalisation banner */
+    .personal { background: rgba(232,200,200,.2); padding: 96px 0; }
+    .personal-card { position: relative; background: var(--bg); border-radius: 24px; padding: 56px; box-shadow: 0 1px 8px rgba(0,0,0,.04); display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .personal-card .eyebrow { display: inline-flex; align-items: center; gap: 6px; background: rgba(232,200,200,.6); color: var(--muted); padding: 6px 12px; border-radius: 9999px; font-size: 10px; letter-spacing: 1px; margin-bottom: 18px; }
+    .personal-card h2 { margin-bottom: 18px; }
+    .personal-card > div > p { font-size: 15px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 24px; }
+    .pills { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+    .pill { display: inline-flex; align-items: center; gap: 10px; padding: 9px 18px; background: var(--white); border-radius: 9999px; font-size: 14px; font-weight: 500; color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+    .pill .ico { color: var(--sage); width: 12px; height: 12px; }
+    .form-card { background: var(--white); border-radius: 16px; padding: 32px; box-shadow: 0 10px 25px -10px rgba(0,0,0,.12); }
+    .form-card h3 { font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+    .form-card .sub { font-size: 13px; color: var(--ink-soft); margin-bottom: 22px; }
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .field label { font-size: 12px; font-weight: 600; color: var(--ink); letter-spacing: .3px; }
+    .field input { font: inherit; font-size: 15px; padding: 13px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); outline: none; transition: border-color .2s, box-shadow .2s; }
+    .field input:focus { border-color: var(--sage); box-shadow: 0 0 0 3px rgba(86,98,79,.15); }
+    .field input.invalid { border-color: #b3261e; }
+    .form-card .btn { width: 100%; margin-top: 6px; }
+    .form-status { margin-top: 14px; font-size: 14px; min-height: 20px; text-align: center; }
+    .form-status.ok { color: var(--sage); font-weight: 600; }
+    .form-status.err { color: #b3261e; }
+
+    /* Occasion shopping */
+    .occasions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .occasion { display: flex; flex-direction: column; background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,.04); transition: transform .3s ease; }
+    .occasion:hover { transform: translateY(-4px); }
+    .occasion-img { aspect-ratio: 373 / 467; overflow: hidden; }
+    .occasion-body { padding: 24px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+    .occasion-body h3 { font-size: 22px; font-weight: 600; color: var(--ink); }
+    .occasion-body p { font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+    .occasion-link { margin-top: auto; font-size: 14px; font-weight: 600; color: var(--sage); }
+
+    /* How to order */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .step { background: var(--white); border-radius: 16px; padding: 32px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 1px 8px rgba(0,0,0,.04); }
+    .step-num { font-family: var(--serif); font-size: 44px; color: var(--sage-tint); color: #b9c8ad; line-height: 1; }
+    .step h3 { font-size: 20px; font-weight: 600; color: var(--ink); }
+    .step p { font-size: 14px; line-height: 1.7; color: var(--ink-soft); }
+    .order-note { max-width: 672px; margin: 40px auto 0; display: flex; gap: 14px; align-items: flex-start; background: var(--white); padding: 20px 24px; border-radius: 12px; font-size: 13px; line-height: 1.7; color: var(--ink-soft); }
+    .order-note .ico { color: var(--sage); margin-top: 4px; }
+    .order-note strong { color: var(--ink); }
+
+    /* Instagram */
+    .insta-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+    .insta-grid > div { aspect-ratio: 1 / 1; border-radius: 12px; overflow: hidden; }
+    .insta-actions { display: flex; justify-content: center; gap: 16px; margin-top: 40px; flex-wrap: wrap; }
+
+    /* FAQ */
+    .faq { background: var(--bg-alt); padding: 112px 0; }
+    .faq-wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+    .faq-list { max-width: 864px; margin: 48px auto 0; display: flex; flex-direction: column; gap: 14px; }
+    .faq-item { background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+    .faq-q { width: 100%; text-align: left; padding: 24px 28px; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 16px; font-weight: 600; color: var(--ink); }
+    .faq-q .chev { transition: transform .25s ease; color: var(--muted); }
+    .faq-item.open .faq-q .chev { transform: rotate(180deg); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+    .faq-a-inner { padding: 0 28px 24px; font-size: 14px; line-height: 1.7; color: var(--ink-soft); }
+    .faq-cta { margin-top: 40px; text-align: center; }
+
+    /* Floating WhatsApp badge */
+    .wa-float { position: fixed; right: 24px; bottom: 24px; z-index: 60; display: inline-flex; align-items: center; gap: 12px; background: var(--white); border-radius: 9999px; padding: 14px 20px; font-size: 14px; font-weight: 600; color: var(--ink); box-shadow: 0 10px 25px -5px rgba(0,0,0,.15), 0 4px 10px -4px rgba(0,0,0,.1); transition: transform .2s ease; }
+    .wa-float:hover { transform: translateY(-2px); }
+    .wa-float .live { width: 10px; height: 10px; border-radius: 50%; background: #25d366; box-shadow: 0 0 0 4px rgba(37,211,102,.2); }
+
+    /* Footer */
+    .footer { background: var(--bg-alt); padding: 56px 0 0; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; }
+    .footer h4 { font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--ink); margin-bottom: 16px; }
+    .footer-brand h2 { font-family: var(--serif); font-size: 28px; color: var(--ink); font-weight: 400; margin-bottom: 8px; }
+    .footer-brand .tagline { font-size: 14px; color: var(--ink-soft); margin-bottom: 18px; }
+    .footer-brand p { font-size: 13px; line-height: 1.7; color: var(--ink-soft); max-width: 384px; margin-bottom: 16px; }
+    .footer-brand .loc { font-size: 11px; letter-spacing: 1.2px; color: var(--sage-text); font-weight: 600; }
+    .footer ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer ul a { font-size: 14px; color: var(--ink-soft); }
+    .footer ul a:hover { color: var(--ink); }
+    .footer-link { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink-soft); }
+    .footer-link .ico { color: var(--sage); }
+    .footer-bottom { border-top: 1px solid var(--line); padding: 20px 0 28px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--ink-soft); }
+    .footer-bottom nav { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-bottom a:hover { color: var(--ink); }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .nav { gap: 20px; }
+      .nav a { font-size: 13px; }
+      .hero h1 { font-size: 48px; }
+      .categories { grid-template-columns: repeat(2, 1fr); }
+      .insta-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 960px) {
+      .wrap { padding: 0 24px; }
+      .nav { display: none; }
+      .hero-left, .hero-right { grid-column: 1 / -1; }
+      .hero-left { padding-right: 0; }
+      .hero-right { height: 480px; }
+      .hero { padding: 64px 0; }
+      .hero h1 { font-size: 44px; }
+      .trust-grid { grid-template-columns: 1fr; gap: 28px; }
+      .products { grid-template-columns: repeat(2, 1fr); }
+      .occasions { grid-template-columns: 1fr 1fr; }
+      .steps { grid-template-columns: 1fr; }
+      .story-grid, .personal-card { grid-template-columns: 1fr; gap: 48px; }
+      .personal-card { padding: 36px; }
+      .story-visual { margin-bottom: 40px; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .section { padding: 80px 0; }
+      .faq { padding: 80px 0; }
+      .h2 { font-size: 34px; }
+    }
+    @media (max-width: 640px) {
+      .wrap { padding: 0 20px; }
+      .header .wrap { height: 68px; }
+      .order-pill span { display: none; }
+      .hero h1 { font-size: 36px; letter-spacing: -0.8px; }
+      .hero-lead { font-size: 16px; }
+      .hero-right { height: 380px; }
+      .float-badge { left: 16px; bottom: 16px; font-size: 12px; padding: 10px 14px; }
+      .categories { grid-template-columns: 1fr; }
+      .products { grid-template-columns: 1fr; }
+      .occasions { grid-template-columns: 1fr; }
+      .insta-grid { grid-template-columns: repeat(2, 1fr); }
+      .h2 { font-size: 30px; }
+      .personal-card { padding: 28px 22px; }
+      .stamp { position: relative; width: 100%; bottom: auto; margin-top: -40px; }
+      .footer-top { grid-template-columns: 1fr; }
+      .section-head { margin-bottom: 44px; }
+      .faq-q { padding: 20px; font-size: 15px; }
+      .faq-a-inner { padding: 0 20px 20px; }
+      .wa-float { right: 16px; bottom: 16px; padding: 12px 16px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement bar -->
+  <div class="aside">THOUGHTFUL HANDMADE GIFTS, CREATED WITH LOVE.</div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="wrap">
+      <a href="#" class="brand">
+        <div class="brand-mark">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M12 21c-4-3-7-6.5-7-10a7 7 0 0 1 14 0c0 3.5-3 7-7 10z"/></svg>
+        </div>
+        <div>
+          <div class="brand-name">Craft Palette</div>
+          <div class="brand-sub">Artisanal Studio</div>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="#categories">Home</a>
+        <a href="#products">Shop All</a>
+        <a href="#categories">Forever Flowers</a>
+        <a href="#personal">Personalised Gifts</a>
+        <a href="#occasions">Gift Hampers</a>
+        <a href="#story">Our Story</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" aria-label="Search products">
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        </button>
+        <div class="cart-wrap">
+          <button class="order-pill" aria-label="View cart">
+            <svg class="ico" viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6 5 3H2"/></svg>
+            <span>Cart</span>
+          </button>
+          <span class="cart-count">0</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- 1. HERO -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-left">
+          <div class="pill-badge eyebrow" style="letter-spacing:1.1px;">
+            <svg class="ico" viewBox="0 0 24 24"><path d="M12 21c-4-3-7-6.5-7-10a7 7 0 0 1 14 0c0 3.5-3 7-7 10z"/></svg>
+            HANDMADE WITH LOVE
+          </div>
+          <h1>Little creations.<br />Beautiful memories.</h1>
+          <p class="hero-lead">Thoughtful handmade flowers and personalised gifts, crafted meticulously to make your favourite people feel extra special and cherished.</p>
+          <div class="hero-ctas">
+            <a href="#categories" class="btn btn--dark">Explore the Collection
+              <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a href="#personal" class="btn btn--light">Create a Custom Gift</a>
+          </div>
+          <div class="hero-note">
+            <svg class="ico" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg>
+            Each creation individually handcrafted to order in our artisanal studio.
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="ph" role="img" aria-label="Handcrafted pipe-cleaner flower bouquet in soft blush and sage"></div>
+          <div class="float-badge">
+            <span class="dot"></span>
+            <span class="label">Handmade in Studio</span>
+            <span class="sep">•</span>
+            <span class="label">Velvet Texture Finish</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. TRUST STRIP -->
+    <section class="trust">
+      <div class="wrap trust-grid">
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg class="ico" viewBox="0 0 24 24" style="width:20px;height:20px"><path d="M7 19c-3 0-4-3-4-6 0-5 4-9 9-9 0 5-2 10-5 15zM7 19c2-4 5-7 9-9"/></svg>
+          </div>
+          <div>
+            <h3>Made by Hand</h3>
+            <p>Meticulously crafted petal by petal with premium velvety materials.</p>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg class="ico" viewBox="0 0 24 24" style="width:20px;height:20px"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg>
+          </div>
+          <div>
+            <h3>Personalised with Care</h3>
+            <p>Customised names, color palettes, and personal hand-lettered cards.</p>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg class="ico" viewBox="0 0 24 24" style="width:20px;height:20px"><rect x="3" y="8" width="18" height="12" rx="1"/><path d="M12 8v12M3 12h18M12 8c-2-3-5-3-5-1s3 1 5 1zm0 0c2-3 5-3 5-1s-3 1-5 1z"/></svg>
+          </div>
+          <div>
+            <h3>Thoughtful Gifting</h3>
+            <p>Artisanal keepsake wrapping ready to give, designed to be treasured forever.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SHOP BY CATEGORY -->
+    <section class="section" id="categories">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">CURATED COLLECTIONS</div>
+          <h2 class="h2">Find something meaningful</h2>
+          <p>Small details make the sweetest gifts. Explore creations crafted to stay vibrant through seasons.</p>
+        </div>
+        <div class="categories">
+          <a href="#products" class="cat-card">
+            <div class="cat-img"><div class="ph" role="img" aria-label="Forever Flowers collection featuring tulips and daisies in ceramic vase"></div></div>
+            <div class="cat-body">
+              <h3>Forever Flowers</h3>
+              <p>Pipe-cleaner flowers, tulips, daisies, sunflowers, and handmade…</p>
+              <span class="cat-link">Explore Forever Flowers <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+          <a href="#products" class="cat-card">
+            <div class="cat-img"><div class="ph ph--choc" role="img" aria-label="Luxury handcrafted chocolate bouquet with velvet accents"></div></div>
+            <div class="cat-body">
+              <h3>Chocolate Bouquets</h3>
+              <p>Gourmet chocolate arrangements paired with delicate handmade velvet</p>
+              <span class="cat-link">Explore Chocolate Bouquets <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+          <a href="#personal" class="cat-card">
+            <div class="cat-img"><div class="ph ph--sage" role="img" aria-label="Personalised quilling art and wood carving frame on easel"></div></div>
+            <div class="cat-body">
+              <h3>Personalised Gifts</h3>
+              <p>Pencil carvings, quilling name frames, and customised keepsake frames.</p>
+              <span class="cat-link">Explore Personalised Gifts <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+          <a href="#occasions" class="cat-card">
+            <div class="cat-img"><div class="ph ph--paper" role="img" aria-label="Curated gift box with linen ribbon and botanicals"></div></div>
+            <div class="cat-body">
+              <h3>Gift Hampers &amp; Cards</h3>
+              <p>Handmade greeting cards, keepsake boxes, and thoughtfully curated…</p>
+              <span class="cat-link">Explore Hampers &amp; Cards <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. FEATURED PRODUCTS -->
+    <section class="section section--alt" id="products">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">ARTISAN CATALOGUE</div>
+          <h2 class="h2">Little things, made with love</h2>
+          <p>Handmade pieces for birthdays, celebrations, and just-because moments. Each order tailored directly with the artist.</p>
+        </div>
+        <div class="products">
+
+          <article class="product">
+            <div class="product-img">
+              <div class="ph" role="img" aria-label="Forever Flower Bouquet in blush and pastels"></div>
+              <span class="tag">Custom Colors Available</span>
+            </div>
+            <div class="product-info">
+              <div class="product-cat">HANDMADE FLORALS</div>
+              <h3>Forever Flower Bouquet</h3>
+              <div class="price">Price on Custom Quote</div>
+              <div class="product-actions">
+                <a href="#" class="order-link">
+                  <svg class="ico" viewBox="0 0 24 24"><path d="M4 20l1.2-4A8 8 0 1 1 8 18.8z"/></svg>
+                  Order on WhatsApp
+                </a>
+                <button class="add-btn" aria-label="Add Forever Flower Bouquet to bag">
+                  <svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product">
+            <div class="product-img">
+              <div class="ph ph--warm" role="img" aria-label="Mini Daisy Pastel Bunch in ceramic pot"></div>
+              <span class="tag">Ready to Gift</span>
+            </div>
+            <div class="product-info">
+              <div class="product-cat">DESK &amp; KEEPSAKE FLORALS</div>
+              <h3>Mini Daisy Pastel Bunch</h3>
+              <div class="price">Price on Custom Quote</div>
+              <div class="product-actions">
+                <a href="#" class="order-link">
+                  <svg class="ico" viewBox="0 0 24 24"><path d="M4 20l1.2-4A8 8 0 1 1 8 18.8z"/></svg>
+                  Order on WhatsApp
+                </a>
+                <button class="add-btn" aria-label="Add Mini Daisy Pastel Bunch to bag">
+                  <svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product">
+            <div class="product-img">
+              <div class="ph ph--choc" role="img" aria-label="Luxury Chocolate &amp; Velvet Bloom Bouquet"></div>
+              <span class="tag">Assorted Confectionery</span>
+            </div>
+            <div class="product-info">
+              <div class="product-cat">SWEET CELEBRATIONS</div>
+              <h3>Luxury Chocolate &amp; Bloom</h3>
+              <div class="price">Price on Custom Quote</div>
+              <div class="product-actions">
+                <a href="#" class="order-link">
+                  <svg class="ico" viewBox="0 0 24 24"><path d="M4 20l1.2-4A8 8 0 1 1 8 18.8z"/></svg>
+                  Order on WhatsApp
+                </a>
+                <button class="add-btn" aria-label="Add Luxury Chocolate and Bloom to bag">
+                  <svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product">
+            <div class="product-img">
+              <div class="ph ph--sage" role="img" aria-label="Handcrafted Quilling Name Frame"></div>
+              <span class="tag">Custom Name &amp; Date</span>
+            </div>
+            <div class="product-info">
+              <div class="product-cat">PERSONALISED KEEPSAKES</div>
+              <h3>Quilling Custom Name Frame</h3>
+              <div class="price">Price on Custom Quote</div>
+              <div class="product-actions">
+                <a href="#" class="order-link">
+                  <svg class="ico" viewBox="0 0 24 24"><path d="M4 20l1.2-4A8 8 0 1 1 8 18.8z"/></svg>
+                  Order on WhatsApp
+                </a>
+                <button class="add-btn" aria-label="Add Quilling Custom Name Frame to bag">
+                  <svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product">
+            <div class="product-img">
+              <div class="ph ph--paper" role="img" aria-label="Artisan Studio Keepsake Gift Box"></div>
+              <span class="tag">Includes Lettered Card</span>
+            </div>
+            <div class="product-info">
+              <div class="product-cat">CURATED HAMPERS</div>
+              <h3>Studio Keepsake Gift Box</h3>
+              <div class="price">Price on Custom Quote</div>
+              <div class="product-actions">
+                <a href="#" class="order-link">
+                  <svg class="ico" viewBox="0 0 24 24"><path d="M4 20l1.2-4A8 8 0 1 1 8 18.8z"/></svg>
+                  Order on WhatsApp
+                </a>
+                <button class="add-btn" aria-label="Add Studio Keepsake Gift Box to bag">
+                  <svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product">
+            <div class="product-img">
+              <div class="ph ph--warm" role="img" aria-label="Micro Pencil Carving and Glass Dome Keepsake"></div>
+              <span class="tag">100% Hand Carved</span>
+            </div>
+            <div class="product-info">
+              <div class="product-cat">MINIATURE ART</div>
+              <h3>Pencil Carving Keepsake</h3>
+              <div class="price">Price on Custom Quote</div>
+              <div class="product-actions">
+                <a href="#" class="order-link">
+                  <svg class="ico" viewBox="0 0 24 24"><path d="M4 20l1.2-4A8 8 0 1 1 8 18.8z"/></svg>
+                  Order on WhatsApp
+                </a>
+                <button class="add-btn" aria-label="Add Pencil Carving Keepsake to bag">
+                  <svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="advisory">
+          <strong>Studio Note:</strong> Prices depend on selected customisations, flower stem count, confectionery selection, and bespoke arrangements. Tap "Order on WhatsApp" to receive immediate visual examples and an exact quote from our designer.
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. BRAND STORY -->
+    <section class="section" id="story">
+      <div class="wrap story-grid">
+        <div class="story-text">
+          <div class="eyebrow">OUR PHILOSOPHY</div>
+          <h2 class="h2" style="margin-top:14px;">Not just a gift.<br />A little piece of someone’s heart.</h2>
+          <p>At Craft Palette, we believe the smallest handmade details can hold the biggest feelings. From forever flowers to personalised keepsakes, every creation is made to help you celebrate someone special.</p>
+          <p>What started as a love for miniature crafts and slow, tactile art has grown into a boutique atelier dedicated to keepsakes that never wilt, never fade, and always remind your loved ones how deeply they are cherished.</p>
+          <div class="signoff">With love, The Craft Palette Studio</div>
+          <a href="#" class="btn btn--dark">Discover Our Story
+            <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <div class="story-visual">
+          <div class="main"><div class="ph ph--sage" role="img" aria-label="Artisan hands carefully folding kraft box and tying linen ribbon in atelier"></div></div>
+          <div class="stamp">
+            <div class="stamp-icon">
+              <svg class="ico" viewBox="0 0 24 24" style="width:22px;height:22px"><path d="M12 21c-4-3-7-6.5-7-10a7 7 0 0 1 14 0c0 3.5-3 7-7 10z"/></svg>
+            </div>
+            <div>
+              <h4>Chennai Atelier Studio</h4>
+              <p>Handcrafted in small batches with heirloom mindfulness.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. PERSONALISATION BANNER + FORM -->
+    <section class="personal" id="personal">
+      <div class="wrap">
+        <div class="personal-card">
+          <div>
+            <div class="eyebrow">BESPOKE REQUESTS</div>
+            <h2 class="h2" style="margin-top:14px;">Have a little idea of your own?</h2>
+            <p>Tell us your recipient's favourite colours, names, wedding dates, confectionery choices, or gifting concepts. We collaborate directly with you to turn memories into tangible art.</p>
+            <div class="pills">
+              <span class="pill"><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Custom Color Schemes</span>
+              <span class="pill"><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Personalised Lettering &amp; Names</span>
+              <span class="pill"><svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Gourmet Treat Selections</span>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <h3>Request a Custom Gift</h3>
+            <p class="sub">Leave your details and we'll be in touch to plan your piece.</p>
+            <form id="giftForm" novalidate>
+              <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" placeholder="Your full name" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+              </div>
+              <div class="field">
+                <label for="phone">Phone</label>
+                <input id="phone" name="phone" type="tel" placeholder="+91 98765 43210" autocomplete="tel" required />
+              </div>
+              <button type="submit" class="btn btn--dark" id="submitBtn">Request a Custom Gift</button>
+              <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. OCCASION-BASED SHOPPING -->
+    <section class="section section--alt" id="occasions">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">MEANINGFUL MILESTONES</div>
+          <h2 class="h2">Gifts for Every Chapter</h2>
+          <p>Celebrate the people who matter most with timeless pieces made to match their journey.</p>
+        </div>
+        <div class="occasions">
+          <a href="#products" class="occasion">
+            <div class="occasion-img"><div class="ph ph--warm" role="img" aria-label="Birthday bloom arrangement"></div></div>
+            <div class="occasion-body">
+              <div class="product-cat">MILESTONES</div>
+              <h3>Birthday Surprises</h3>
+              <p>Bright pastel blooms, sweet chocolate arrangements, and happy handmade touches.</p>
+              <span class="occasion-link">Browse Birthday Gifts →</span>
+            </div>
+          </a>
+          <a href="#products" class="occasion">
+            <div class="occasion-img"><div class="ph ph--sage" role="img" aria-label="Anniversary forever bouquet"></div></div>
+            <div class="occasion-body">
+              <div class="product-cat">ROMANCE &amp; YEARS</div>
+              <h3>Anniversary Gifts</h3>
+              <p>Timeless forever flower bouquets and framed custom memories that last for years.</p>
+              <span class="occasion-link">Browse Anniversary Keepsakes →</span>
+            </div>
+          </a>
+          <a href="#products" class="occasion">
+            <div class="occasion-img"><div class="ph ph--paper" role="img" aria-label="Handcrafted frame for just because tokens"></div></div>
+            <div class="occasion-body">
+              <div class="product-cat">EVERYDAY WARMTH</div>
+              <h3>Just Because</h3>
+              <p>Small thoughtful gestures to brighten a regular Tuesday and make someone smile.</p>
+              <span class="occasion-link">Browse Gentle Gestures →</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. HOW TO ORDER -->
+    <section class="section section--alt">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">SIMPLE PROCESS</div>
+          <h2 class="h2">How It Works</h2>
+          <p>We believe handcrafted gifting should feel intimate and stress-free.</p>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">01</div>
+            <h3>Explore the collection</h3>
+            <p>Browse our forever flowers, personalised frames, and handcrafted hampers here to find an aesthetic or shape you adore.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">02</div>
+            <h3>Choose or customise</h3>
+            <p>Pick your favourite design or message us with your recipient's preferred colours, names, and personal notes.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">03</div>
+            <h3>Confirm &amp; we deliver</h3>
+            <p>We handcraft your piece with love, share preview photos, and coordinate safe doorstep delivery across India.</p>
+          </div>
+        </div>
+        <div class="order-note">
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+          <div><strong>Studio Note:</strong> We currently confirm all orders via WhatsApp to ensure attentive 1-on-1 customisation. Direct automated card checkout is in development for future updates.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. INSTAGRAM SHOWCASE -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">SOCIAL ATELIER</div>
+          <h2 class="h2">A little peek into our handmade world</h2>
+          <p>Follow along for new creations, behind-the-scenes moments, and gifting inspiration.</p>
+        </div>
+        <div class="insta-grid">
+          <div><div class="ph" role="img" aria-label="Instagram post: bouquet crafting"></div></div>
+          <div><div class="ph ph--warm" role="img" aria-label="Instagram post: ceramic vase florals"></div></div>
+          <div><div class="ph ph--sage" role="img" aria-label="Instagram post: quilling frame"></div></div>
+          <div><div class="ph ph--paper" role="img" aria-label="Instagram post: tying ribbon packaging"></div></div>
+          <div><div class="ph ph--choc" role="img" aria-label="Instagram post: chocolate bloom"></div></div>
+          <div><div class="ph ph--warm" role="img" aria-label="Instagram post: close up petal texture"></div></div>
+        </div>
+        <div class="insta-actions">
+          <a href="#" class="btn btn--light">
+            <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/></svg>
+            @the_.craft_.palette_
+          </a>
+          <a href="#" class="btn btn--dark">Follow on Instagram</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. FAQ -->
+    <section class="faq" id="faq">
+      <div class="faq-wrap">
+        <div class="section-head" style="margin-bottom:0;">
+          <div class="eyebrow">GOT QUESTIONS?</div>
+          <h2 class="h2">Frequently Asked Questions</h2>
+          <p>Everything you need to know about our handmade process and ordering.</p>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">Can I customise the colours or design? <svg class="ico chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="faq-a"><div class="faq-a-inner">Yes. Most of our pieces can be tailored to your preferred colours, names, dates and gifting concept. Message us on WhatsApp and we'll share visual examples before crafting begins.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">How do I place an order? <svg class="ico chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="faq-a"><div class="faq-a-inner">Choose a creation, then tap "Order on WhatsApp" or send us a request using the form above. We'll confirm details and quote before you pay.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">Do you deliver outside Chennai? <svg class="ico chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="faq-a"><div class="faq-a-inner">Yes, we deliver across India with safe doorstep delivery.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">How are delivery charges calculated? <svg class="ico chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="faq-a"><div class="faq-a-inner">Delivery charges depend on your location and the size of your order. We confirm the exact amount with your quote.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">How long will my custom order take? <svg class="ico chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="faq-a"><div class="faq-a-inner">Every piece is handcrafted to order, so timelines vary with complexity. We share an estimated date when we confirm your order.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">Can I pay online? <svg class="ico chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+            <div class="faq-a"><div class="faq-a-inner">Currently, orders are confirmed and paid through WhatsApp. Direct online card checkout is in development.</div></div>
+          </div>
+        </div>
+        <div class="faq-cta">
+          <a href="#" class="btn btn--dark">Chat with Artisan on WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Floating WhatsApp badge -->
+  <a href="#" class="wa-float" aria-label="WhatsApp Concierge">
+    <span class="live"></span>
+    Chat with Artisan on WhatsApp
+  </a>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h2>Craft Palette</h2>
+          <div class="tagline">Little creations. Beautiful memories.</div>
+          <p>Handmade with love, made to be gifted. We craft bespoke botanical arrangements, delicate keepsakes, and heirloom gift boxes for meaningful moments.</p>
+          <div class="loc">HANDCRAFTED IN CHENNAI, INDIA</div>
+        </div>
+        <div>
+          <h4>Shop Categories</h4>
+          <ul>
+            <li><a href="#categories">Forever Flowers</a></li>
+            <li><a href="#categories">Chocolate Bouquets</a></li>
+            <li><a href="#personal">Personalised Keepsakes</a></li>
+            <li><a href="#occasions">Hampers &amp; Cards</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Help &amp; Inquiries</h4>
+          <ul>
+            <li><a href="#occasions">How to Order</a></li>
+            <li><a href="#personal">Customisation Guide</a></li>
+            <li><a href="#">WhatsApp Concierge</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <ul>
+            <li class="footer-link"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg><a href="#">@the_.craft_.palette_</a></li>
+            <li class="footer-link"><svg class="ico" viewBox="0 0 24 24"><path d="M4 20l1.2-4A8 8 0 1 1 8 18.8z"/></svg><a href="#">WhatsApp Business</a></li>
+          </ul>
+          <p style="font-size:13px;line-height:1.7;color:var(--ink-soft);margin-top:18px;">Crafted with love in Chennai, delivering memories across India.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <nav>
+          <a href="#">Shipping Policy</a>
+          <a href="#">Returns &amp; Cancellation Policy</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </nav>
+        <div>© 2025 Craft Palette. All handmade creations lovingly crafted.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ===== Google Apps Script endpoint (deployed Web app URL) =====
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwC9T3yzDwVxca1fzErcknNxlynAjk1hbkaUep723-A1RTXq5nmVNvvSyjy8i_GcOisvA/exec";
+
+    const form = document.getElementById("giftForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const statusEl = document.getElementById("formStatus");
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    function setStatus(msg, type) {
+      statusEl.textContent = msg;
+      statusEl.className = "form-status " + (type || "");
+    }
+
+    function showSuccess() {
+      setStatus("Thank you! We've received your request and will be in touch soon.", "ok");
+      form.reset();
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Request a Custom Gift";
+    }
+
+    function showError() {
+      setStatus("Something went wrong. Please try again or message us on WhatsApp.", "err");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Request a Custom Gift";
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+
+      // Basic client-side validation
+      ["name", "email", "phone"].forEach(function (id) {
+        document.getElementById(id).classList.remove("invalid");
+      });
+      let valid = true;
+      if (!name) { document.getElementById("name").classList.add("invalid"); valid = false; }
+      if (!EMAIL_RE.test(email)) { document.getElementById("email").classList.add("invalid"); valid = false; }
+      if (!phone) { document.getElementById("phone").classList.add("invalid"); valid = false; }
+      if (!valid) {
+        setStatus("Please fill in your name, a valid email and phone number.", "err");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending…";
+      setStatus("", "");
+
+      const url = SCRIPT_URL + "?" + new URLSearchParams({ name: name, email: email, phone: phone });
+
+      fetch(url, { method: "GET", mode: "no-cors" })
+        .then(function () { showSuccess(); })
+        .catch(function () { showError(); });
+    });
+
+    // ===== FAQ accordion =====
+    document.querySelectorAll(".faq-item").forEach(function (item) {
+      const btn = item.querySelector(".faq-q");
+      const panel = item.querySelector(".faq-a");
+      btn.addEventListener("click", function () {
+        const isOpen = item.classList.toggle("open");
+        btn.setAttribute("aria-expanded", String(isOpen));
+        panel.style.maxHeight = isOpen ? panel.scrollHeight + "px" : "0px";
+      });
+    });
+  </script>
+</body>
+</html>
